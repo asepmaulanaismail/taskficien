@@ -20,21 +20,9 @@ function removeRenderedPart(){
 }
 
 function removeActivedMenu(){
-	$("li").removeClass("active")
+	$("li").removeClass("active");
 }
 
-function users(li){
-	removeRenderedPart();
-	removeActivedMenu();
-	$('#title').text("Users");
-	var btnRender = "";
-	btnRender += '<button class="btn btn-primary" id="btnAdd" type="button">Add</button>';
-	btnRender += '<button class="btn btn-primary disabled" id="btnEdit" type="button">Edit</button>';
-	btnRender += '<button class="btn btn-primary disabled" id="btnDelete" type="button">Delete</button>';
-						
-	$('#btnArea').html(btnRender);
-						
-	var app = new UserView();
-	
-	$(li).addClass("active");
+function goToFile(cat){
+	window.location = cat + ".html";
 }
