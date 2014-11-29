@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Taskficien</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="Assets/Style/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="Assets/Style/taskficien.css" rel="stylesheet">
+    <link href="Assets/Style/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="bootstrap/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="Assets/Style/bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="Assets/Style/bootstrap/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="Assets/Style/bootstrap/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="Assets/Style/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="Assets/Style/bootstrap/ico/favicon.ico">
+								   
+	<script src="http://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="http://underscorejs.org/underscore-min.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="http://backbonejs.org/backbone-min.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="Assets/Scripts/backbone.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="Assets/Scripts/taskficien.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="Assets/Scripts/common.js" type="text/javascript" language="JavaScript" ></script>
+	
+	<!-- load javascript function -->
+    <script src="Assets/Scripts/user.js" type="text/javascript" language="JavaScript" ></script>
+	<script>
+		var isLoggedIn = readCookie("isLoggedIn");
+		if (isLoggedIn != "true"){
+			window.location = "index.html";
+		}
+	</script>
+	
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Taskficien</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <!--li id="home" onclick="javascript: goToFile('dashboard');"><a href="#">Dashboard</a></li-->
+              <li id="users" onclick="javascript: goToFile('user');"><a href="#">Users</a></li>
+              <li id="logout" onclick="javascript: doLogout();"><a href="#">Logout</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="row-fluid">
+					<div class="span12" style="text-align: left;">
+						<h3 id="title" >Users</h3>
+					</div>
+				</div>
+				<hr/>
+				<div class="row-fluid">
+					<div class="span12" id="searchArea">
+						<!-- render area for search options -->
+						<form id="formSearch" class="form-horizontal">
+							<div class="row-fluid">
+								<div class="span8" style="vertical-align: bottom;">
+									<table>
+										<colgroup>
+											<col width="100%"/>
+										</colgroup>
+										<tr>
+											<td>
+												<div class="control-group">
+													<label class="control-label" for="username">Username</label>
+													<div class="controls">
+														<input type="text" id="searchUsername" placeholder="Username"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="control-group">
+													<label class="control-label" for="username">Name</label>
+													<div class="controls">
+														<input type="text" id="searchName" placeholder="Name"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="control-group">
+													<label class="control-label" for="username">Email</label>
+													<div class="controls">
+														<input type="text" id="searchEmail" placeholder="Email (ex: taskficien@gmail.com)" />
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="span4" style="vertical-align: bottom;">
+								</div>
+							</div>
+							<div class="row-fluid">
+								<div class="span8" style="vertical-align: bottom;">
+								</div>
+								<div class="span4" style="vertical-align: bottom;">
+									<input type="button" name="btnClear" class="btn btn-primary" value="Clear"  onClick="javascript: doClear()" style="float: right;"/>
+									<input type="button" name="btnSubmit" class="btn btn-primary" value="Search" onClick="javascript: doSearch()" style="float: right;"/>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="row-fluid btn-div">
+					<div class="span6" align="left" id="btnArea">
+						<a href="#addUser"  role="button" data-toggle="modal"><button class="btn btn-primary" id="btnAdd" type="button" ><i class="icon-plus icon-white"></i> Add</button></a>
+						<button class="btn btn-primary disabled" id="btnEdit" type="button" ><i class="icon-pencil icon-white"></i> Edit</button>
+						<button class="btn btn-primary disabled" id="btnDelete" type="button"><i class="icon-remove icon-white"></i> Delete</button>
+					</div>
+					<div class="span6">
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span12" id="msgArea">
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span12" id="renderArea">
+						<!-- render area for body page -->
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Modal -->
+		<div id="addUser" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<p id="myModalLabel"><strong>Add</strong> User</p>
+		  </div>
+		  <div class="modal-body">
+				<div id="loginForm">	
+					<form id="formAdd" class="form-horizontal">
+						<table>
+							<colgroup>
+								<col width="100%"/>
+							</colgroup>
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="username">Username</label>
+										<div class="controls">
+											<input type="text" class="input-block-level" id="username" placeholder="Username" required value=""/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="password">Password</label>
+										<div class="controls">
+											<input type="password" id="password" placeholder="Password" required value=""/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="firstName">First Name</label>
+										<div class="controls">
+											<input type="text" id="firstName" placeholder="First Name" required value=""/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="lastName">Last Name</label>
+										<div class="controls">
+											<input type="text" id="lastName" placeholder="Last Name" required value=""/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="email">Email</label>
+										<div class="controls">
+											<input type="email" id="email" placeholder="Email" required value=""/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<!--tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="email"></label>
+										<div class="controls">
+											<label class="checkbox">
+												<input type="checkbox" id="isAdmin"> Make as admin
+											</label>
+										</div>
+									</div>
+								</td>
+							</tr-->
+						</table>
+					</form>
+				</div>
+		  </div>
+			<div class="modal-footer">
+				<input type="button" class="btn btn-primary" id="btnSave" value="Save"/>
+			</div>
+		</div>
+		
+		<!-- Modal -->
+		<div id="editUser" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<p id="myModalLabel"><strong>Edit</strong> User</p>
+		  </div>
+		  <div class="modal-body">
+				<div id="loginForm">	
+					<form id="formEdit" class="form-horizontal">
+						<table>
+							<colgroup>
+								<col width="100%"/>
+							</colgroup>
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="usernameEdit">Username</label>
+										<div class="controls">
+											<input type="text" class="input-block-level" id="usernameEdit" placeholder="Username" required value="" disabled/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<!--tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="password">Password</label>
+										<div class="controls">
+											<input type="password" id="password" placeholder="Password" required value=""/>
+										</div>
+									</div>
+								</td>
+							</tr-->
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="firstNameEdit">First Name</label>
+										<div class="controls">
+											<input type="text" id="firstNameEdit" placeholder="First Name" required value=""/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="lastNameEdit">Last Name</label>
+										<div class="controls">
+											<input type="text" id="lastNameEdit" placeholder="Last Name" required value=""/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="emailEdit">Email</label>
+										<div class="controls">
+											<input type="email" id="emailEdit" placeholder="Email" required value=""/>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<!--tr>
+								<td>
+									<div class="control-group">
+										<label class="control-label" for="email"></label>
+										<div class="controls">
+											<label class="checkbox">
+												<input type="checkbox" id="isAdmin"> Make as admin
+											</label>
+										</div>
+									</div>
+								</td>
+							</tr-->
+						</table>
+					</form>
+					</form>
+				</div>
+		  </div>
+			<div class="modal-footer">
+				<input type="button" class="btn btn-primary" id="btnSaveEdit" value="Save"/>
+			</div>
+		</div>
+		
+		<!-- Modal -->
+		<div id="deleteUser" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<p id="myModalLabel"><strong>Delete</strong> Confirmation</p>
+		  </div>
+		  <div class="modal-body">
+			Are you sure do you want to delete this data?
+		  </div>
+			<div class="modal-footer">
+				<input type="button" class="btn btn-primary" id="btnDeleteConfirm" value="Delete"/>
+				<button class="btn" id="btnNoConfirm" type="button">No</button>
+			</div>
+		</div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="Assets/Style/bootstrap/js/jquery.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-button.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-typeahead.js"></script> 
+	<script>
+		var users;
+		var userView;
+		(function($){						
+			$("#btnSave").click(function(e){
+				// Prevent the button from triggering a form submission.
+				e.preventDefault();
+
+				var user = new User({
+					username: $("#username").val(),
+					password: $("#password").val(),
+					first_name: $("#firstName").val(),
+					last_name: $("#lastName").val(),
+					email: $("#email").val()
+				});
+
+				var contentType ="application/json;";
+
+				if(window.XDomainRequest){ //for IE8,IE9
+					contentType = "text/plain;";
+				}
+
+				$.ajax({
+					url: apiUrl + "user/",
+					type: "POST",
+					dataType: "text json",
+					contentType: contentType,
+					async: false,
+					beforeSend: function (request)
+					{
+						request.setRequestHeader("Authorization", readCookie("Authorization"));
+					},
+					data: JSON.stringify(user),
+					success: function(data,status){
+						////debugger;
+						userView.render();
+					},
+					error:function(jqXHR,textStatus,errorThrown)
+					{
+						////debugger;
+						console.log(jqXHR.statusText);
+					},
+					complete: function(){
+						$("#addUser").modal("hide");
+						userView.render();
+					}
+				});
+			});
+			
+			$("#btnEdit").click(function(e){
+				////debugger;
+				// Prevent the button from triggering a form submission.
+				e.preventDefault();
+				if ($("input:checked").length == 1){
+					
+					var id = $("input:checked").parent().find("[name=textId]").first().val();
+					////debugger;
+					var objUser = users.get(id);
+					
+					$("#usernameEdit").val(objUser.attributes.username);
+					$("#passwordEdit").val(objUser.attributes.password);
+					$("#firstNameEdit").val(objUser.attributes.first_name);
+					$("#lastNameEdit").val(objUser.attributes.last_name);
+					$("#emailEdit").val(objUser.attributes.email);
+					
+					$("#editUser").modal("show");
+				}else{
+					//showMessageAlert("Please select one record!");
+				}
+			});
+			
+			$("#btnSaveEdit").click(function(e){
+				//debugger;
+				// Prevent the button from triggering a form submission.
+				e.preventDefault();
+				var id = $("input:checked").parent().find("[name=textId]").first().val();
+				
+				var user = new User({
+					username: $("#usernameEdit").val(),
+					first_name: $("#firstNameEdit").val(),
+					last_name: $("#lastNameEdit").val(),
+					email: $("#emailEdit").val()
+				});
+				
+				var contentType ="application/json;";
+				
+				if(window.XDomainRequest){ //for IE8,IE9
+					contentType = "text/plain;";
+				}
+				
+				$.ajax({
+					url: apiUrl + "user/" + id + "/",
+					type: "POST",
+					dataType: "text json",
+					contentType: contentType,
+					async: false,
+					beforeSend: function (request)
+					{
+						request.setRequestHeader("Authorization", readCookie("Authorization"));
+						request.setRequestHeader("X-HTTP-Method-Override", "PUT");
+					},
+					data: JSON.stringify(user),
+					success: function(data,status){
+						////debugger;
+						userView.render();
+					},
+					error:function(jqXHR,textStatus,errorThrown)
+					{
+						////debugger;
+						console.log(jqXHR.statusText);
+					},
+					complete: function(){
+						////debugger;
+						$("#editUser").modal("hide");
+						userView.render();
+					}
+				});
+			});
+			
+			$("#btnDelete").click(function(e){
+				if ($("input:checked").length > 0){
+					$("#deleteUser").modal("show");
+				}else{
+					//showMessageAlert("Please select one or more records!");
+				}
+			});
+			
+			$("#btnNoConfirm").click(function(e){
+				$("#deleteUser").modal("hide");
+			});
+			
+			$("#btnDeleteConfirm").click(function(e){
+				  // Prevent the button from triggering a form submission.
+				e.preventDefault();
+				
+				var checkboxes = $("input:checked");
+				
+				var n = checkboxes.length;
+				var counter = 0;
+				
+				$.each(checkboxes, function(){
+				
+					var id = $(this).parent().find("[name=textId]").first().val();
+					////debugger;
+					var objUser = users.get(id);
+					
+					$("#usernameEdit").val(objUser.attributes.username);
+					$("#passwordEdit").val(objUser.attributes.password);
+					$("#firstNameEdit").val(objUser.attributes.first_name);
+					$("#lastNameEdit").val(objUser.attributes.last_name);
+					$("#emailEdit").val(objUser.attributes.email);					
+					
+					var contentType ="application/json;";
+					
+					if(window.XDomainRequest){ //for IE8,IE9
+						contentType = "text/plain;";
+					}
+					
+					$.ajax({
+						url: apiUrl + "user/" + id + "/",
+						type: "DELETE",
+						dataType: "text json",
+						contentType: contentType,
+						async: false,
+						beforeSend: function (request)
+						{
+							request.setRequestHeader("Authorization", readCookie("Authorization"));
+						},
+						success: function(data,status){
+							////debugger;
+							userView.render();
+						},
+						error:function(jqXHR,textStatus,errorThrown)
+						{
+							////debugger;
+							console.log(jqXHR.statusText);
+						},
+						complete: function()
+						{
+							counter++;
+							//debugger;
+							if (counter >= n){
+								$("#deleteUser").modal("hide");
+								userView.render();
+								$("#btnDelete").addClass("disabled");
+							}
+						}
+					});
+				});
+			});
+			
+			users = new Users(); 
+			userView = new UserView(users);
+			
+			userView.render();
+		})(jQuery);
+		
+		function doSearch(){
+			var params = "";
+			
+			if ($("#searchUsername").val() != "" && $("#searchUsername").val() != undefined){
+				params += "username__contains=" + $("#searchUsername").val() + "&";
+			}
+			
+			if ($("#searchName").val() != "" && $("#searchName").val() != undefined){
+				var name = $("#searchName").val().split(' ');
+				params += "first_name__contains=" + name[0] + "&";
+				
+				if (name.length > 1)
+					params += "last_name__contains=" + name[1] + "&";
+			}
+			
+			if ($("#searchEmail").val() != "" && $("#searchEmail").val() != undefined){
+				params += "email__contains=" + $("#searchEmail").val();
+			}
+				
+			//removeRenderedPart();
+			users.setParams(params);
+			userView = new UserView(users);
+			userView.render();
+		}
+		
+		function doClear(){
+			$("#searchUsername").val("");
+			$("#searchName").val("");
+			$("#searchEmail").val("");
+			
+			users = new Users(); 
+			userView = new UserView(users);
+			
+			userView.render();
+		}
+		
+		function toogleAdmin(btn, id, val){
+			var contentType ="application/json;";
+			//debugger;
+				
+			if(window.XDomainRequest){ //for IE8,IE9
+				contentType = "text/plain;";
+			}
+			
+			var objUser = users.get(id);
+			
+			if (objUser.username != "admin"){
+				
+				$.ajax({
+					url: apiUrl + "user/" + id + "/",
+					type: "POST",
+					dataType: "text json",
+					contentType: contentType,
+					async: false,
+					beforeSend: function (request)
+					{
+						request.setRequestHeader("Authorization", readCookie("Authorization"));
+						request.setRequestHeader("X-HTTP-Method-Override", "PUT");
+					},
+					data: JSON.stringify({
+						is_superuser: val
+					}),
+					success: function(data,status){
+						////debugger;
+						userView.render();
+					},
+					error:function(jqXHR,textStatus,errorThrown)
+					{
+						////debugger;
+						console.log(jqXHR.statusText);
+					},
+					complete: function(){
+						//debugger;
+						$(btn).val((val != true)? "Make as admin": "Cancel admin");
+						$(btn).attr("onclick", "toogleAdmin(this," + id + "," + !val + ")");
+						
+						//set role
+						$($(btn).parent().parent().find("td")[$(btn).parent().parent().find("td").length - 2]).text((val != true)? "Staff": "Admin")
+					}
+				});
+			}
+		}
+	</script>
+  </body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Taskficien</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="Assets/Style/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style>
+		body {
+			padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+		}
+
+		.btn-div{
+			margin-bottom: 10px;
+		}
+		
+		.btn{
+			margin-left: 3px;
+			margin-right: 3px;
+		}
+    </style>
+    <link href="Assets/Style/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="bootstrap/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="Assets/Style/bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="Assets/Style/bootstrap/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="Assets/Style/bootstrap/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="Assets/Style/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="Assets/Style/bootstrap/ico/favicon.ico">
+								   
+	<script src="http://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="http://underscorejs.org/underscore-min.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="http://backbonejs.org/backbone-min.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="Assets/Scripts/backbone.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="Assets/Scripts/taskficien.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="Assets/Scripts/common.js" type="text/javascript" language="JavaScript" ></script>
+	
+	<!-- load javascript function -->
+    <script src="Assets/Scripts/user.js" type="text/javascript" language="JavaScript" ></script>
+	
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Taskficien</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li id="home" onclick="javascript: goToFile('dashboard');"><a href="#">Dashboard</a></li>
+              <li id="users" onclick="javascript: goToFile('user');"><a href="#">Users</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="row-fluid">
+					<div class="span12" style="text-align: left;">
+						<h3 id="title" >User Add</h3>
+					</div>
+				</div>
+				<hr/>
+				<div class="row-fluid">
+					<div class="span12" id="searchArea">
+						<!-- render area for search options -->
+						<form id="formAdd">
+							<input type="text" id="username" placeholder="Username" required/><br/>
+							<input type="password" id="password" placeholder="Password" required/><br/>
+							<input type="text" id="firstName" placeholder="First Name" required/><br/>
+							<input type="text" id="lastName" placeholder="Last Name" required/><br/>
+							<input type="email" id="Email" placeholder="Email" required/><hr/>
+							<input type="button" class="btn btn-primary" id="btnSave" value="Save" onClick="javascript: doSave()"/>
+							<button class="btn btn-primary" id="btnCancel" type="button">Cancel</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="Assets/Style/bootstrap/js/jquery.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-button.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="Assets/Style/bootstrap/js/bootstrap-typeahead.js"></script> 
+	<script>
+		(function($){
+		})(jQuery);
+		
+		function doSave(){
+			debugger;
+			var contentType ="application/json";
+			
+			if(window.XDomainRequest) //for IE8,IE9
+				contentType = "text/plain";
+			
+			
+			$.ajax({
+				url: "http://192.168.0.109:8000/api/v1/user/",
+				type: "POST",
+				dataType: "json",
+				crossDomain: true,
+				contentType: contentType,
+				data: JSON.stringify({
+					"username": $("#username").val(),
+					"first_name": $("#firstName").val(),
+					"last_name": $("#lastName").val(),
+					"password": $("#password").val(),
+					"email": $("#email").val(),
+				}),
+				/*headers: {
+					"Authorization": "Basic bnVyd2luOmNpYW5qdXI="
+				},*/
+				success: function(data,status){
+					debugger;
+					window.location = "dashboard.html";
+				},
+				error:function(jqXHR,textStatus,errorThrown)
+				 {
+					debugger;
+					alert("You can not send Cross Domain AJAX requests: "+errorThrown);
+				 }
+			});
+		}
+	</script>
+  </body>
+</html>

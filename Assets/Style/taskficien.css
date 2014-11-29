@@ -1,0 +1,61 @@
+
+hr {
+	margin: 5px;
+}
+
+body {
+	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+	background-color: white;
+}
+
+.btn-div{
+	margin: 10px;
+}
+
+.btn{
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.row-fluid{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#myModalLabel{
+	font-size: 36px;
+}
+
+.modal-header{
+	margin: 10px;
+	text-align: left;
+	vertical-align: top;
+}
+
+.modal-body{
+	text-align: left;
+}
+
+.login-form{
+	text-align: left;
+}
+
+.control-label{
+	width: 90px;
+}
+
+.controls{
+	margin-left: 120px;
+}
+
+.btn-div{
+	margin-bottom: 10px;
+}
+
+.row-fluid{
+	padding: 0px;
+}
+
+hr{
+	padding:5px;
+}
