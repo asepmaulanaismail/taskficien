@@ -151,5 +151,23 @@ var TaskCategoryView = Backbone.View.extend({
 		html += ("</table>");
 		$('#serchArea').append(html);
 		
+	},
+	
+	renderCombo: function(id){
+		var that = this;
+		this.collection.fetch({
+			success: function(){					
+				_.each(that.collection.toJSON(), function(taskCategory){
+				debugger;
+					var html = "";
+					html += ("<option value='" + taskCategory.id + "'>");
+					html += (taskCategory.task_category_name);
+					html += ("</option>");
+					
+					$("#" + id).append(html);
+				});
+			}
+		});
+		
 	}
 });

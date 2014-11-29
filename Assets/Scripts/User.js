@@ -157,5 +157,23 @@ var UserView = Backbone.View.extend({
 		html += ("</table>");
 		$('#serchArea').append(html);
 		
+	},
+	
+	renderCombo: function(id){
+		var that = this;
+		this.collection.fetch({
+			success: function(){					
+				_.each(that.collection.toJSON(), function(user){
+				debugger;
+					var html = "";
+					html += ("<option value='" + user.id + "'>");
+					html += (user.username);
+					html += ("</option>");
+					
+					$("#" + id).append(html);
+				});
+			}
+		});
+		
 	}
 });

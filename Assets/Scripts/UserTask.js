@@ -30,7 +30,7 @@ var UserTasks = Backbone.Collection.extend({
 		return $.ajax(params);
 	},
 	setParams: function(params){
-		this.url = apiUrl + 'user_Task/';
+		this.url = apiUrl + 'user_task/';
 		this.url += "?" + params;
 	}
 });
@@ -59,7 +59,7 @@ var UserTaskView = Backbone.View.extend({
 		// Fetch the collection and call render() method
 		var that = this;
 		//that.renderSearch();
-		that.renderHeader(["Task","User", "Status", "Note", "Action"]);
+		that.renderHeader(["Task","User", "Status", "Note"]);
 
 		//fetch all data
 		this.collection.fetch({
@@ -72,32 +72,36 @@ var UserTaskView = Backbone.View.extend({
 				var rowNum = 1;
 				
 				_.each(that.collection.toJSON(), function(userTask){
+					debugger;
+					
+					var status = "";
+					if (userTask.usertask_status == "D"){
+						status = "Done";
+					}else if (userTask.usertask_status == "A"){
+						status = "Accepted";
+					}else if (userTask.usertask_status == "R"){
+						status = "Rejected";
+					}
 					var html = "";
 					html += ("<tr>");
 					html += ("<td>");
 					html += (checkBox);
-					html += (id.replace('{0}', ""));
+					html += (id.replace('{0}', userTask.id));
 					html += ("</td>");
 					html += ("<td>");
 					html += (rowNum); 
 					html += ("</td>");
 					html += ("<td>");
-					html += (userTask.task.task_name); 
+					html += (userTask.task.task_category_name); 
 					html += ("</td>");
 					html += ("<td>");
-					html += (userTask.user.first_name + userTask.user.last_name); 
+					html += (userTask.user.username); 
 					html += ("</td>");
 					html += ("<td>");
-					html += (userTask.status); 
+					html += (status); 
 					html += ("</td>");
 					html += ("<td>");
-					html += (userTask.note); 
-					html += ("</td>");
-					html += ("<td>");
-					
-					/*if (user.username != "admin"){
-						html += ("<input class='btn btn-success' type='button' value='" + ((user.is_superuser != true)? "Make as admin" : "Cancel admin") + "' onClick='toogleAdmin(this, " + user.id + ", "+ ((user.is_superuser != true)? "true" : "false") +")' />"); 
-					}*/
+					html += (userTask.usertask_note); 
 					html += ("</td>");
 					html += ("</tr>");
 					

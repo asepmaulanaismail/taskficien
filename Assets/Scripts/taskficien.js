@@ -1,4 +1,4 @@
-var host = 'http://nurwin.koding.io:5000';
+var host = 'http://nurwin.koding.io:8000';
 var baseUrlAPI = '/api/v1/';
 var apiUrl = host + baseUrlAPI;
 var tblId = "idTbl";
