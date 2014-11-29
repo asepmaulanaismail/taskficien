@@ -33,6 +33,8 @@
 	
 	<!-- load javascript function -->
     <script src="Assets/Scripts/usertask.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="Assets/Scripts/user.js" type="text/javascript" language="JavaScript" ></script>
+    <script src="Assets/Scripts/taskcategory.js" type="text/javascript" language="JavaScript" ></script>
 	<script>
 		var isLoggedIn = readCookie("isLoggedIn");
 		if (isLoggedIn != "true"){
@@ -58,6 +60,7 @@
               <!--li id="home" onclick="javascript: goToFile('dashboard');"><a href="#">Dashboard</a></li-->
               <li id="users" onclick="javascript: goToFile('user');"><a href="#">Users</a></li>
               <li id="tasks" onclick="javascript: goToFile('task');"><a href="#">Tasks</a></li>
+              <li id="usertasks" onclick="javascript: goToFile('usertask');" class="active"><a href="#">User Tasks</a></li>
               <li id="logout" onclick="javascript: doLogout();"><a href="#">Logout</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -97,9 +100,9 @@
 										<tr>
 											<td>
 												<div class="control-group">
-													<label class="control-label" for="searchName">Name</label>
+													<label class="control-label" for="searchName">Username</label>
 													<div class="controls">
-														<input type="text" id="searchName" placeholder="FirstName LastName"/>
+														<input type="text" id="searchName" placeholder="Username"/>
 													</div>
 												</div>
 											</td>
@@ -109,7 +112,11 @@
 												<div class="control-group">
 													<label class="control-label" for="taskStatus">Status</label>
 													<div class="controls">
-														<input type="text" id="taskStatus" placeholder="Status" />
+														<select id="taskStatus">
+															<option value="A">Accepted</option>
+															<option value="D">Done</option>
+															<option value="R">Rejected</option>
+														</select>
 													</div>
 												</div>
 											</td>
@@ -167,9 +174,10 @@
 							<tr>
 								<td>
 									<div class="control-group">
-										<label class="control-label" for="username">Username</label>
+										<label class="control-label" for="task">Task</label>
 										<div class="controls">
-											<input type="text" class="input-block-level" id="username" placeholder="Username" required value=""/>
+											<select id="task">
+											</select>
 										</div>
 									</div>
 								</td>
@@ -177,9 +185,10 @@
 							<tr>
 								<td>
 									<div class="control-group">
-										<label class="control-label" for="password">Password</label>
+										<label class="control-label" for="user">User</label>
 										<div class="controls">
-											<input type="password" id="password" placeholder="Password" required value=""/>
+											<select id="user">
+											</select>
 										</div>
 									</div>
 								</td>
@@ -187,9 +196,13 @@
 							<tr>
 								<td>
 									<div class="control-group">
-										<label class="control-label" for="firstName">First Name</label>
+										<label class="control-label" for="status">Status</label>
 										<div class="controls">
-											<input type="text" id="firstName" placeholder="First Name" required value=""/>
+											<select id="status">
+												<option value="A">Accepted</option>
+												<option value="D">Done</option>
+												<option value="R">Rejected</option>
+											</select>
 										</div>
 									</div>
 								</td>
@@ -197,35 +210,13 @@
 							<tr>
 								<td>
 									<div class="control-group">
-										<label class="control-label" for="lastName">Last Name</label>
+										<label class="control-label" for="note">Note</label>
 										<div class="controls">
-											<input type="text" id="lastName" placeholder="Last Name" required value=""/>
+											<input type="text" id="note" placeholder="Note" required value=""/>
 										</div>
 									</div>
 								</td>
 							</tr>
-							<tr>
-								<td>
-									<div class="control-group">
-										<label class="control-label" for="email">Email</label>
-										<div class="controls">
-											<input type="email" id="email" placeholder="Email" required value=""/>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<!--tr>
-								<td>
-									<div class="control-group">
-										<label class="control-label" for="email"></label>
-										<div class="controls">
-											<label class="checkbox">
-												<input type="checkbox" id="isAdmin"> Make as admin
-											</label>
-										</div>
-									</div>
-								</td>
-							</tr-->
 						</table>
 					</form>
 				</div>
@@ -236,10 +227,10 @@
 		</div>
 		
 		<!-- Modal -->
-		<div id="editUser" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div id="editUserTask" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			<p id="myModalLabel"><strong>Edit</strong> User</p>
+			<p id="myModalLabel"><strong>Edit</strong> User Task</p>
 		  </div>
 		  <div class="modal-body">
 				<div id="loginForm">	
@@ -251,29 +242,10 @@
 							<tr>
 								<td>
 									<div class="control-group">
-										<label class="control-label" for="usernameEdit">Username</label>
+										<label class="control-label" for="taskEdit">Task</label>
 										<div class="controls">
-											<input type="text" class="input-block-level" id="usernameEdit" placeholder="Username" required value="" disabled/>
-										</div>
-									</div>
-								</td>
-							</tr>
-							<!--tr>
-								<td>
-									<div class="control-group">
-										<label class="control-label" for="password">Password</label>
-										<div class="controls">
-											<input type="password" id="password" placeholder="Password" required value=""/>
-										</div>
-									</div>
-								</td>
-							</tr-->
-							<tr>
-								<td>
-									<div class="control-group">
-										<label class="control-label" for="firstNameEdit">First Name</label>
-										<div class="controls">
-											<input type="text" id="firstNameEdit" placeholder="First Name" required value=""/>
+											<select id="taskEdit">
+											</select>
 										</div>
 									</div>
 								</td>
@@ -281,9 +253,10 @@
 							<tr>
 								<td>
 									<div class="control-group">
-										<label class="control-label" for="lastNameEdit">Last Name</label>
+										<label class="control-label" for="userEdit">User</label>
 										<div class="controls">
-											<input type="text" id="lastNameEdit" placeholder="Last Name" required value=""/>
+											<select id="userEdit">
+											</select>
 										</div>
 									</div>
 								</td>
@@ -291,25 +264,27 @@
 							<tr>
 								<td>
 									<div class="control-group">
-										<label class="control-label" for="emailEdit">Email</label>
+										<label class="control-label" for="statusEdit">Status</label>
 										<div class="controls">
-											<input type="email" id="emailEdit" placeholder="Email" required value=""/>
+											<select id="statusEdit">
+												<option value="A">Accepted</option>
+												<option value="D">Done</option>
+												<option value="R">Rejected</option>
+											</select>
 										</div>
 									</div>
 								</td>
 							</tr>
-							<!--tr>
+							<tr>
 								<td>
 									<div class="control-group">
-										<label class="control-label" for="email"></label>
+										<label class="control-label" for="noteEdit">Note</label>
 										<div class="controls">
-											<label class="checkbox">
-												<input type="checkbox" id="isAdmin"> Make as admin
-											</label>
+											<input type="text" id="noteEdit" placeholder="Note" required value=""/>
 										</div>
 									</div>
 								</td>
-							</tr-->
+							</tr>
 						</table>
 					</form>
 					</form>
@@ -321,7 +296,7 @@
 		</div>
 		
 		<!-- Modal -->
-		<div id="deleteUser" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div id="deleteUserTask" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			<p id="myModalLabel"><strong>Delete</strong> Confirmation</p>
@@ -357,16 +332,15 @@
 		var userTasks;
 		var userTaskView;
 		(function($){						
-			/*$("#btnSave").click(function(e){
+			$("#btnSave").click(function(e){
 				// Prevent the button from triggering a form submission.
 				e.preventDefault();
 
-				var user = new User({
-					username: $("#username").val(),
-					password: $("#password").val(),
-					first_name: $("#firstName").val(),
-					last_name: $("#lastName").val(),
-					email: $("#email").val()
+				var userTask = new UserTask({
+					user: '/api/v1/user/' + $("#user").val() + '/', 
+					task: '/api/v1/task_category/' + $("#task").val() + '/',
+					usertask_status: $("#status").val(),
+					usertask_note: $("#note").val()
 				});
 
 				var contentType ="application/json;";
@@ -376,7 +350,7 @@
 				}
 
 				$.ajax({
-					url: apiUrl + "user/",
+					url: apiUrl + "user_task/",
 					type: "POST",
 					dataType: "text json",
 					contentType: contentType,
@@ -385,7 +359,7 @@
 					{
 						request.setRequestHeader("Authorization", readCookie("Authorization"));
 					},
-					data: JSON.stringify(user),
+					data: JSON.stringify(userTask),
 					success: function(data,status){
 						////debugger;
 						userView.render();
@@ -396,8 +370,8 @@
 						console.log(jqXHR.statusText);
 					},
 					complete: function(){
-						$("#addUser").modal("hide");
-						userView.render();
+						$("#addUserTask").modal("hide");
+						userTaskView.render();
 					}
 				});
 			});
@@ -409,16 +383,14 @@
 				if ($("input:checked").length == 1){
 					
 					var id = $("input:checked").parent().find("[name=textId]").first().val();
-					////debugger;
-					var objUser = users.get(id);
+					var objUser = userTasks.get(id);
 					
-					$("#usernameEdit").val(objUser.attributes.username);
-					$("#passwordEdit").val(objUser.attributes.password);
-					$("#firstNameEdit").val(objUser.attributes.first_name);
-					$("#lastNameEdit").val(objUser.attributes.last_name);
-					$("#emailEdit").val(objUser.attributes.email);
+					$("#taskEdit").val(objUser.attributes.task.id);
+					$("#userEdit").val(objUser.attributes.user.id);
+					$("#statusEdit").val(objUser.attributes.usertask_status);
+					$("#noteEdit").val(objUser.attributes.usertask_note);
 					
-					$("#editUser").modal("show");
+					$("#editUserTask").modal("show");
 				}else{
 					//showMessageAlert("Please select one record!");
 				}
@@ -430,11 +402,11 @@
 				e.preventDefault();
 				var id = $("input:checked").parent().find("[name=textId]").first().val();
 				
-				var user = new User({
-					username: $("#usernameEdit").val(),
-					first_name: $("#firstNameEdit").val(),
-					last_name: $("#lastNameEdit").val(),
-					email: $("#emailEdit").val()
+				var userTask = new UserTask({
+					user: '/api/v1/user/' + $("#user").val() + '/', 
+					task: '/api/v1/task_category/' + $("#task").val() + '/',
+					usertask_status: $("#statusEdit").val(),
+					usertask_note: $("#noteEdit").val()
 				});
 				
 				var contentType ="application/json;";
@@ -444,7 +416,7 @@
 				}
 				
 				$.ajax({
-					url: apiUrl + "user/" + id + "/",
+					url: apiUrl + "user_task/" + id + "/",
 					type: "POST",
 					dataType: "text json",
 					contentType: contentType,
@@ -454,7 +426,7 @@
 						request.setRequestHeader("Authorization", readCookie("Authorization"));
 						request.setRequestHeader("X-HTTP-Method-Override", "PUT");
 					},
-					data: JSON.stringify(user),
+					data: JSON.stringify(userTask),
 					success: function(data,status){
 						////debugger;
 						userView.render();
@@ -466,22 +438,22 @@
 					},
 					complete: function(){
 						////debugger;
-						$("#editUser").modal("hide");
-						userView.render();
+						$("#editUserTask").modal("hide");
+						userTaskView.render();
 					}
 				});
 			});
 			
 			$("#btnDelete").click(function(e){
 				if ($("input:checked").length > 0){
-					$("#deleteUser").modal("show");
+					$("#deleteUserTask").modal("show");
 				}else{
 					//showMessageAlert("Please select one or more records!");
 				}
 			});
 			
 			$("#btnNoConfirm").click(function(e){
-				$("#deleteUser").modal("hide");
+				$("#deleteUserTask").modal("hide");
 			});
 			
 			$("#btnDeleteConfirm").click(function(e){
@@ -497,13 +469,7 @@
 				
 					var id = $(this).parent().find("[name=textId]").first().val();
 					////debugger;
-					var objUser = users.get(id);
-					
-					$("#usernameEdit").val(objUser.attributes.username);
-					$("#passwordEdit").val(objUser.attributes.password);
-					$("#firstNameEdit").val(objUser.attributes.first_name);
-					$("#lastNameEdit").val(objUser.attributes.last_name);
-					$("#emailEdit").val(objUser.attributes.email);					
+					var objUser = userTasks.get(id);				
 					
 					var contentType ="application/json;";
 					
@@ -512,7 +478,7 @@
 					}
 					
 					$.ajax({
-						url: apiUrl + "user/" + id + "/",
+						url: apiUrl + "user_task/" + id + "/",
 						type: "DELETE",
 						dataType: "text json",
 						contentType: contentType,
@@ -535,55 +501,65 @@
 							counter++;
 							//debugger;
 							if (counter >= n){
-								$("#deleteUser").modal("hide");
-								userView.render();
-								$("#btnDelete").addClass("disabled");
+								$("#deleteUserTask").modal("hide");
+								userTaskView.render();
+								$("#btnDeleteTask").addClass("disabled");
 							}
 						}
 					});
 				});
-			});*/
+			});
 			
 			userTasks = new UserTasks(); 
 			userTaskView = new UserTaskView(userTasks);
 			
 			userTaskView.render();
+			
+			debugger;
+			
+			users = new Users(); 
+			userView = new UserView(users);
+			
+			userView.renderCombo("user");
+			userView.renderCombo("userEdit");
+			
+			tasksCategory = new TasksCategory(); 
+			taskCategoryView = new TaskCategoryView(tasksCategory);
+			
+			taskCategoryView.renderCombo("task");
+			taskCategoryView.renderCombo("taskEdit");
 		})(jQuery);
 		
 		function doSearch(){
 			var params = "";
 			
-			if ($("#searchUsername").val() != "" && $("#searchUsername").val() != undefined){
-				params += "username__contains=" + $("#searchUsername").val() + "&";
+			if ($("#taskName").val() != "" && $("#taskName").val() != undefined){
+				params += "task__task_category_name__contains=" + $("#taskName").val() + "&";
 			}
 			
 			if ($("#searchName").val() != "" && $("#searchName").val() != undefined){
-				var name = $("#searchName").val().split(' ');
-				params += "first_name__contains=" + name[0] + "&";
-				
-				if (name.length > 1)
-					params += "last_name__contains=" + name[1] + "&";
+				params += "user__username__contains=" + $("#searchName").val() + "&";
 			}
 			
-			if ($("#searchEmail").val() != "" && $("#searchEmail").val() != undefined){
-				params += "email__contains=" + $("#searchEmail").val();
+			if ($("#taskStatus").val() != "" && $("#taskStatus").val() != undefined){
+				params += "usertask_status__contains=" + $("#taskStatus").val() + "&";
 			}
 				
 			//removeRenderedPart();
-			users.setParams(params);
-			userView = new UserView(users);
-			userView.render();
+			userTasks.setParams(params);
+			userTaskView = new UserTaskView(userTasks);
+			userTaskView.render();
 		}
 		
 		function doClear(){
-			$("#searchUsername").val("");
+			$("#taskName").val("");
 			$("#searchName").val("");
-			$("#searchEmail").val("");
+			$("#taskStatus").val("");
 			
-			users = new Users(); 
-			userView = new UserView(users);
+			userTasks = new UserTasks(); 
+			userTaskView = new UserTaskView(userTasks);
 			
-			userView.render();
+			userTaskView.render();
 		}
 		
 	</script>
