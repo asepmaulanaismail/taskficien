@@ -1,22 +1,39 @@
-var setEnable = function(){
-	var n = $( "input:checked" ).length;
-	if (n > 0){
-	
-		if (n == 1){
-			$("#btnEdit").removeClass("disabled");
+var setEnable = function(check){
+	if (check != undefined){
+		var n = $(check).parent().parent().parent().find( "input:checked" ).length;
+		if (n > 0){			
+			$("#btnDeleteDetail").removeClass("disabled");
+		}else{
+			$("#btnDeleteDetail").addClass("disabled");
+		}
+	}else{
+		var n = $( "input:checked" ).length;
+		if (n > 0){
+		
+			if (n == 1){
+				$("#btnEdit").removeClass("disabled");
+			}else{
+				$("#btnEdit").addClass("disabled");
+			}
+			
+			$("#btnDelete").removeClass("disabled");
 		}else{
 			$("#btnEdit").addClass("disabled");
+			$("#btnDelete").addClass("disabled");
 		}
-		
-		$("#btnDelete").removeClass("disabled");
-	}else{
-		$("#btnEdit").addClass("disabled");
-		$("#btnDelete").addClass("disabled");
 	}
 }
 
 function removeRenderedPart(){
 	$('#renderArea').html('');
+}
+
+function removeRenderedPartDetail(){
+	$('#renderAreaDetail').html('');
+}
+
+function removeRenderedPartDetailAttach(){
+	$('#renderAreaDetailAttach').html('');
 }
 
 function removeActivedMenu(){
@@ -88,4 +105,8 @@ function doLogout(){
 	writeCookie("Authorization", "", 1);
 	
 	window.location = "index.html";
+}
+
+function download(file){
+	console.log(file);
 }
